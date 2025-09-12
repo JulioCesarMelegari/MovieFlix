@@ -1,11 +1,20 @@
 package com.devsuperior.movieflix.dto;
 
+import com.devsuperior.movieflix.entities.Genre;
+
 public class GenreDTO {
 
     private Long id;
     private String name;
+    
+    
 
-    public Long getId() {
+    public GenreDTO(Genre genre) {
+		id = genre.getId();
+		name = genre.getName();
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -20,4 +29,5 @@ public class GenreDTO {
     public void setName(String name) {
         this.name = name;
     }
+    
 }
