@@ -8,6 +8,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 
 import com.devsuperior.movieflix.dto.UserDTO;
 import com.devsuperior.movieflix.entities.Role;
@@ -45,5 +48,23 @@ public class UserService implements UserDetailsService {
 		}
 		
 		return user;
+	}
+	
+	protected User authenticated() {
+		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			Jwt jwtPrincipal = (Jwt) authentication.getPrincipal();
+			String username = jwtPrincipal.getClaim("username");
+			return repository.findByEmail(username);
+		}
+		catch (Exception e) {
+			throw new UsernameNotFoundException("Email not found");
+		}
+	}
+	
+	@Transactional
+	public UserDTO getMe() {
+		User user = authenticated();
+		return new UserDTO(user);
 	}
 }

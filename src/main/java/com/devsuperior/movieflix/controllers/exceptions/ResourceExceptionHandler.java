@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.devsuperior.movieflix.dto.StandardErrorDTO;
 import com.devsuperior.movieflix.dto.ValidationErrorDTO;
 import com.devsuperior.movieflix.services.exceptions.DatabaseException;
+import com.devsuperior.movieflix.services.exceptions.MovieNotFoundException;
 import com.devsuperior.movieflix.services.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,7 +30,20 @@ public class ResourceExceptionHandler {
 		err.setMessage(e.getMessage());
 		err.setPath(request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
-	}	
+	}
+	
+
+	@ExceptionHandler(MovieNotFoundException.class)
+	public ResponseEntity<StandardErrorDTO> movieNotFound(MovieNotFoundException e, HttpServletRequest request) {
+		HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+		StandardErrorDTO err = new StandardErrorDTO();
+		err.setTimestamp(Instant.now());
+		err.setStatus(status.value());
+		err.setError("Resource not found");
+		err.setMessage(e.getMessage());
+		err.setPath(request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
 	
 	@ExceptionHandler(DatabaseException.class)
 	public ResponseEntity<StandardErrorDTO> database(DatabaseException e, HttpServletRequest request) {
