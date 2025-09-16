@@ -13,9 +13,7 @@ O sistema deve oferecer:
 * Filtro opcional por gênero na listagem de filmes.
 * Visualização de detalhes do filme (título, subtítulo, ano, imagem, sinopse e lista de avaliações com o nome do usuário).
 * Criação de avaliação (reviews) apenas por usuários com perfil `MEMBER`.
-
-O projeto será avaliado por testes automatizados que exercitam endpoints REST, regras de autenticação/autorização e tratamento de erros.
-
+  
 ---
 
 ## Requisitos de segurança / autenticação
